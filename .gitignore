@@ -1,0 +1,10 @@
+# Build dizinleri
+/build/
+/build-*/
+
+# Qt/CMake kullanıcıya özel dosyalar
+*.user
+CMakeLists.txt.user.*
+
+# Mac/OSX sistem dosyaları
+.DS_Store
