@@ -1,2 +1,1 @@
-#About Noor
 Noor is an open-source, modular research platform designed for in-depth, comparative, and contextual study of the Holy Qur'an. Transform your interaction from passive reading into dynamic discovery of Islamic knowledge.
