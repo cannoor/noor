@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title data-en="Noor - The Modular Research Platform for Holy Quran" data-tr="Noor - Kur'an için Modüler Araştırma Platformu" data-ar="نور - منصة بحثية معيارية للقرآن الكريم">Noor - The Modular Research Platform for Holy Quran</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #16a085;
+            --secondary: #0d4f3c;
+            --accent: #27ae60;
+            --gradient: linear-gradient(135deg, #16a085 0%, #2ecc71 100%);
+            --dark-bg: #0f1c14;
+            --card-bg: rgba(22, 160, 133, 0.05);
+            --text-light: rgba(255, 255, 255, 0.9);
+            --text-muted: rgba(255, 255, 255, 0.7);
+            --gold: #d4a017;
+        }
+
+        body {
+            font-family: 'Poppins', 'Noto Naskh Arabic', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-light);
+            background: var(--dark-bg);
+            overflow-x: hidden;
+            transition: direction 0.3s ease;
+        }
+
+        body.rtl {
+            direction: rtl;
+            text-align: right;
+        }
+
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a1b0f 0%, #1a2c20 50%, #2d4a37 100%);
+            z-index: -2;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 27, 15, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(22, 160, 133, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-family: 'Noto Naskh Arabic', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-family: 'Poppins', 'Noto Naskh Arabic', sans-serif;
+            font-weight: 400;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-light);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .logo-link::after {
+            content: none;
+        }
+
+        .language-toggle {
+            display: flex;
+            background: rgba(22, 160, 133, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2px;
+        }
+
+        .language-toggle button {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 6px 12px;
+            cursor: pointer;
+            font-family: 'Poppins', 'Noto Naskh Arabic', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .language-toggle button.active {
+            background: var(--accent);
+            color: var(--text-light);
+            border-radius: 18px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            position: relative;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-family: 'Noto Naskh Arabic', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .hero-text .subtitle {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 300;
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            font-family: 'Poppins', 'Noto Naskh Arabic', sans-serif;
+            font-weight: 600;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-light);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .app-mockup {
+            width: 100%;
+            max-width: 500px;
+            height: 350px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: float-slow 6s ease-in-out infinite;
+        }
+
+        @keyframes float-slow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .mockup-header {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .mockup-dots {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .mockup-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .mockup-content {
+            padding: 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mockup-line {
+            height: 8px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            border-radius: 4px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 0;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Noto Naskh Arabic', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-header p {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 300;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-family: 'Poppins', 'Noto Naskh Arabic', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .feature-card p {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 300;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Pillars Section */
+        .pillars {
+            padding: 6rem 0;
+        }
+
+        .pillars-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .pillar {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .pillar-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--gradient);
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .pillar h3 {
+            font-family: 'Poppins', 'Noto Naskh Arabic', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .pillar p {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 300;
+            color: var(--text-muted);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 6rem 0;
+            background: var(--gradient);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section h2 {
+            font-family: 'Noto Naskh Arabic', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .cta-section p {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 300;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .newsletter-form {
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .newsletter-form h3 {
+            font-family: 'Poppins', 'Noto Naskh Arabic', sans-serif;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-form form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .newsletter-form label {
+            font-family: 'Poppins', 'Noto Naskh Arabic', sans-serif;
+            font-weight: bold;
+            color: white;
+        }
+
+        .newsletter-form input[type="email"] {
+            padding: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            width: 100%;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .newsletter-form input[type="submit"] {
+            padding: 0.75rem;
+            background: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Poppins', 'Noto Naskh Arabic', sans-serif;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .newsletter-form input[type="submit"]:hover {
+            background: #27ae60;
+        }
+
+        .newsletter-form p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        .newsletter-form a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+        }
+
+        .newsletter-form a:hover {
+            color: var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-bg);
+            padding: 3rem 0 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-family: 'Poppins', 'Noto Naskh Arabic', sans-serif;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section a {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 300;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 300;
+        }
+
+        .footer-bottom a {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-bottom a:hover {
+            color: var(--accent);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .cta-buttons {
+                justify-content: center;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .newsletter-form {
+                padding: 1.5rem;
+                margin: 1.5rem auto;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr !important;
+                text-align: center;
+            }
+
+            .about-logo {
+                margin-bottom: 2rem;
+            }
+        }
+
+        .bismillah {
+            text-align: center;
+            font-family: 'Noto Naskh Arabic', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin: 2rem 0;
+            direction: rtl;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .verse {
+            text-align: center;
+            font-family: 'Noto Naskh Arabic', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            color: var(--text-light);
+            margin: 1rem 0;
+            direction: rtl;
+            animation: fadeIn 2.5s ease-in-out;
+        }
+
+        .verse-translation {
+            text-align: center;
+            font-family: 'Poppins', 'Noto Naskh Arabic', sans-serif;
+            font-weight: 300;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            animation: fadeIn 3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg"></div>
+    <div class="particles" id="particles"></div>
+
+    <header>
+        <nav class="container">
+            <a href="#top" class="logo logo-link" data-en="Noor" data-tr="Noor" data-ar="نور">Noor</a>
+            <ul class="nav-links">
+                <li><a href="#features" data-en="Features" data-tr="Özellikler" data-ar="الميزات">Features</a></li>
+                <li><a href="#about" data-en="About" data-tr="Hakkında" data-ar="عن المشروع">About</a></li>
+                <li><a href="#pillars" data-en="Architecture" data-tr="Mimari" data-ar="الهندسة المعمارية">Architecture</a></li>
+                <li><a href="#cta-section" data-en="Join the Journey" data-tr="Yolculuğa Katıl" data-ar="انضم إلى الرحلة">Join the Journey</a></li>
+                <li class="language-toggle">
+                    <button onclick="switchLanguage('en')" class="active" id="enBtn">EN</button>
+                    <button onclick="switchLanguage('tr')" id="trBtn">TR</button>
+                    <button onclick="switchLanguage('ar')" id="arBtn">AR</button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="top">
+        <section class="hero">
+            <div class="container">
+                <div class="bismillah">
+                    بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
+                </div>
+                <div class="verse">
+                    اقْرَأْ بِاسْمِ رَبِّكَ ٱلَّذِى خَلَقَ
+                </div>
+                <div class="verse-translation" data-en="Read in the name of your Lord who created (Al-'Alaq 96:1)" data-tr="Rabbinin adıyla oku, O ki yarattı (Al-'Alaq 96:1)" data-ar="اقرأ باسم ربك الذي خلق (العلق 96:1)">Read in the name of your Lord who created (Al-'Alaq 96:1)</div>
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1 data-en="The Future of Qur'anic Research" data-tr="Kur'an Araştırmalarının Geleceği" data-ar="مستقبل البحث القرآني">The Future of Qur'anic Research</h1>
+                        <p class="subtitle" data-en="Noor is an open-source, modular research platform designed for in-depth, comparative, and contextual study of the Holy Qur'an. Transform your interaction from passive reading into dynamic discovery of Islamic knowledge." data-tr="Noor, Kur'an-ı Kerim'in derinlemesine, karşılaştırmalı ve bağlamsal çalışması için tasarlanmış açık kaynaklı, modüler bir araştırma platformudur. Pasif okumadan İslami bilginin dinamik keşfine dönüşüm sağlayın." data-ar="نور هي منصة بحثية مفتوحة المصدر ومعيارية مصممة لدراسة القرآن الكريم بعمق ومقارنة وسياق. حول تفاعلك من القراءة السلبية إلى اكتشاف ديناميكي للمعرفة الإسلامية.">Noor is an open-source, modular research platform designed for in-depth, comparative, and contextual study of the Holy Qur'an. Transform your interaction from passive reading into dynamic discovery of Islamic knowledge.</p>
+                        <div class="cta-buttons">
+                            <a href="https://github.com/cannurdaskiran/noor/" class="btn btn-primary">
+                                <i class="fab fa-github"></i>
+                                <span data-en="Explore on GitHub" data-tr="GitHub'da Keşfet" data-ar="استكشف على GitHub">Explore on GitHub</span>
+                            </a>
+                            <a href="#features" class="btn btn-secondary">
+                                <i class="fas fa-play"></i>
+                                <span data-en="Learn More" data-tr="Daha Fazla Bilgi" data-ar="تعرف على المزيد">Learn More</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="hero-visual">
+                        <div class="app-mockup">
+                            <div class="mockup-header">
+                                <div class="mockup-dots">
+                                    <div class="mockup-dot"></div>
+                                    <div class="mockup-dot"></div>
+                                    <div class="mockup-dot"></div>
+                                </div>
+                                <span style="margin-left: 1rem; color: var(--text-muted); font-size: 0.9rem;" data-en="Noor Research Platform" data-tr="Noor Araştırma Platformu" data-ar="منصة نور البحثية">Noor Research Platform</span>
+                            </div>
+                            <div class="mockup-content">
+                                <div class="mockup-line" style="width: 80%;"></div>
+                                <div class="mockup-line" style="width: 60%; animation-delay: 0.5s;"></div>
+                                <div class="mockup-line" style="width: 90%; animation-delay: 1s;"></div>
+                                <div class="mockup-line" style="width: 70%; animation-delay: 1.5s;"></div>
+                                <div class="mockup-line" style="width: 85%; animation-delay: 2s;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2 data-en="Powerful Features" data-tr="Güçlü Özellikler" data-ar="ميزات قوية">Powerful Features</h2>
+                    <p data-en="Built for Islamic scholars, students, and seekers of Qur'anic knowledge who demand more than simple text reading" data-tr="Basit metin okumaktan daha fazlasını talep eden İslami alimler, öğrenciler ve Kur'an bilgisi arayanlar için tasarlandı" data-ar="مصمم للعلماء الإسلاميين والطلاب والباحثين عن المعرفة القرآنية الذين يطالبون بأكثر من مجرد قراءة النصوص">Built for Islamic scholars, students, and seekers of Qur'anic knowledge who demand more than simple text reading</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-search feature-icon"></i>
+                        <h3 data-en="Advanced Qur'anic Search" data-tr="Gelişmiş Kur'an Araması" data-ar="البحث القرآني المتقدم">Advanced Qur'anic Search</h3>
+                        <p data-en="Perform complex queries across the Holy Qur'an. Search by Arabic root words, themes, surah chronology, revelation context, and cross-reference with authentic Tafsir literature." data-tr="Kur'an-ı Kerim'de karmaşık sorgular yapın. Arapça kök kelimeler, temalar, sure kronolojisi, vahiy bağlamı ve otantik tefsir literatürü ile çapraz referans arayın." data-ar="قم بإجراء استعلامات معقدة عبر القرآن الكريم. ابحث باستخدام الكلمات الجذرية العربية، والموضوعات، وتسلسل السور، وسياق الوحي، وارجع إلى الأدب التفسيري الأصيل.">Perform complex queries across the Holy Qur'an. Search by Arabic root words, themes, surah chronology, revelation context, and cross-reference with authentic Tafsir literature.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-layer-group feature-icon"></i>
+                        <h3 data-en="Islamic Knowledge Modules" data-tr="İslami Bilgi Modülleri" data-ar="وحدات المعرفة الإسلامية">Islamic Knowledge Modules</h3>
+                        <p data-en="Add Qur'anic translations, classical Tafsir works, Arabic dictionaries, and Hadith collections as independent packages. Extend with Islamic scholarly tools and plugins." data-tr="Kur'an çevirileri, klasik tefsir eserleri, Arapça sözlükler ve hadis koleksiyonlarını bağımsız paketler olarak ekleyin. İslami bilimsel araçlar ve eklentilerle genişletin." data-ar="أضف ترجمات القرآن، وأعمال التفسير الكلاسيكية، والقواميس العربية، ومجموعات الحديث كحزم مستقلة. قم بالتوسع باستخدام أدوات وإضافات علمية إسلامية.">Add Qur'anic translations, classical Tafsir works, Arabic dictionaries, and Hadith collections as independent packages. Extend with Islamic scholarly tools and plugins.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-columns feature-icon"></i>
+                        <h3 data-en="Comparative Study Interface" data-tr="Karşılaştırmalı Çalışma Arayüzü" data-ar="واجهة الدراسة المقارنة">Comparative Study Interface</h3>
+                        <p data-en="View Qur'anic verses alongside multiple translations, classical Tafsir commentaries, and related Hadith. Compare with Torah and Gospel references when contextually relevant." data-tr="Kur'an ayetlerini çoklu çeviriler, klasik tefsir yorumları ve ilgili hadislerle birlikte görüntüleyin. Bağlamsal olarak uygun olduğunda Tevrat ve İncil referanslarıyla karşılaştırın." data-ar="اعرض الآيات القرآنية إلى جانب ترجمات متعددة، وتعليقات التفسير الكلاسيكية، والأحاديث ذات الصلة. قارن بمراجع التوراة والإنجيل عندما يكون ذلك مناسبًا سياقيًا.">View Qur'anic verses alongside multiple translations, classical Tafsir commentaries, and related Hadith. Compare with Torah and Gospel references when contextually relevant.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-edit feature-icon"></i>
+                        <h3 data-en="Islamic Scholarly Annotations" data-tr="İslami Bilimsel Notlar" data-ar="تعليقات علمية إسلامية">Islamic Scholarly Annotations</h3>
+                        <p data-en="Create detailed notes with Islamic terminology, custom tags for themes like Tawhid, Ibadah, Akhlaq, and link related Ayahs across the Qur'an to build your thematic studies." data-tr="Tehvid, ibadet, ahlak gibi temalar için özel etiketlerle ayrıntılı notlar oluşturun ve Kur'an boyunca ilgili ayetleri bağlayarak tematik çalışmalarınızı inşa edin." data-ar="أنشئ ملاحظات مفصلة بمصطلحات إسلامية، وعلامات مخصصة لموضوعات مثل التوحيد، والعبادة، والأخلاق، واربط الآيات ذات الصلة عبر القرآن لبناء دراساتك الموضوعية.">Create detailed notes with Islamic terminology, custom tags for themes like Tawhid, Ibadah, Akhlaq, and link related Ayahs across the Qur'an to build your thematic studies.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-shopping-basket feature-icon"></i>
+                        <h3 data-en="Ayah Collection Basket" data-tr="Ayet Toplama Sepeti" data-ar="سلة جمع الآيات">Ayah Collection Basket</h3>
+                        <p data-en="Collect Qur'anic verses, Hadith quotes, and scholarly notes from various Islamic sources into a centralized workspace for Khutbah preparation, research, or Da'wah materials." data-tr="Hutbe hazırlığı, araştırma veya davet materyalleri için çeşitli İslami kaynaklardan Kur'an ayetleri, hadis alıntıları ve bilimsel notları merkezi bir çalışma alanına toplayın." data-ar="اجمع الآيات القرآنية، واقتباسات الحديث، والملاحظات العلمية من مصادر إسلامية متنوعة في مساحة عمل مركزية لإعداد الخطب، والبحث، أو مواد الدعوة.">Collect Qur'anic verses, Hadith quotes, and scholarly notes from various Islamic sources into a centralized workspace for Khutbah preparation, research, or Da'wah materials.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-bolt feature-icon"></i>
+                        <h3 data-en="Optimized for Arabic Text" data-tr="Arapça Metin için Optimize Edilmiş" data-ar="مُحسّن للنصوص العربية">Optimized for Arabic Text</h3>
+                        <p data-en="Built with C++ and Qt 6 for superior Arabic text rendering and RTL support. Local SQLite database ensures instant access to Qur'anic content and complete offline functionality." data-tr="Üstün Arapça metin oluşturma ve sağdan sola destek için C++ ve Qt 6 ile inşa edildi. Yerel SQLite veritabanı, Kur'an içeriğine anında erişim ve tam çevrimdışı işlevsellik sağlar." data-ar="تم بناؤه باستخدام C++ و Qt 6 لعرض نصوص عربية متميز ودعم الاتجاه من اليمين إلى اليسار. قاعدة بيانات SQLite المحلية تضمن الوصول الفوري إلى المحتوى القرآني والوظائف الكاملة دون اتصال.">Built with C++ and Qt 6 for superior Arabic text rendering and RTL support. Local SQLite database ensures instant access to Qur'anic content and complete offline functionality.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pillars" class="pillars">
+            <div class="container">
+                <div class="section-header">
+                    <h2 data-en="Three Foundational Pillars" data-tr="Üç Temel Sütun" data-ar="الأعمدة الأساسية الثلاثة">Three Foundational Pillars</h2>
+                    <p data-en="The architectural principles that drive Noor's design and development" data-tr="Noor'un tasarım ve geliştirmesini yönlendiren mimari ilkeler" data-ar="المبادئ المعمارية التي تدفع تصميم وتطوير نور">The architectural principles that drive Noor's design and development</p>
+                </div>
+                <div class="pillars-content">
+                    <div class="pillar">
+                        <div class="pillar-number">1</div>
+                        <h3 data-en="Performance & Reliability" data-tr="Performans ve Güvenilirlik" data-ar="الأداء والموثوقية">Performance & Reliability</h3>
+                        <p data-en="Built with C++ and Qt 6 framework for native desktop performance on Windows, macOS, and Linux. Local SQLite database ensures complete offline functionality and instant access." data-tr="Windows, macOS ve Linux'ta yerel masaüstü performansı için C++ ve Qt 6 çerçevesiyle inşa edildi. Yerel SQLite veritabanı, tam çevrimdışı işlevsellik ve anında erişim sağlar." data-ar="تم بناؤه باستخدام C++ وإطار Qt 6 لأداء سطح المكتب الأصلي على Windows و macOS و Linux. قاعدة بيانات SQLite المحلية تضمن وظائف كاملة دون اتصال والوصول الفوري.">Built with C++ and Qt 6 framework for native desktop performance on Windows, macOS, and Linux. Local SQLite database ensures complete offline functionality and instant access.</p>
+                    </div>
+                    <div class="pillar">
+                        <div class="pillar-number">2</div>
+                        <h3 data-en="Modularity & Extensibility" data-tr="Modülerlik ve Genişletilebilirlik" data-ar="المعيارية والقابلية للتوسع">Modularity & Extensibility</h3>
+                        <p data-en="Flexible 'Lego brick' architecture with independent data packages and tool plugins. Community-driven development for continuous expansion." data-tr="Bağımsız veri paketleri ve araç eklentileriyle esnek 'Lego tuğlası' mimarisi. Sürekli genişleme için topluluk odaklı geliştirme." data-ar="هندسة 'لبنات ليغو' مرنة مع حزم بيانات وإضافات أدوات مستقلة. تطوير مدفوع بالمجتمع للتوسع المستمر.">Flexible "Lego brick" architecture with independent data packages and tool plugins. Community-driven development for continuous expansion.</p>
+                    </div>
+                    <div class="pillar">
+                        <div class="pillar-number">3</div>
+                        <h3 data-en="User-Centric Research" data-tr="Kullanıcı Odaklı Araştırma" data-ar="البحث المتمحور حول المستخدم">User-Centric Research</h3>
+                        <p data-en="Intuitive workspace designed for serious researchers with advanced annotation tools, powerful search capabilities, and seamless comparative analysis." data-tr="Gelişmiş not alma araçları, güçlü arama yetenekleri ve kesintisiz karşılaştırmalı analiz ile ciddi araştırmacılar için tasarlanmış sezgisel çalışma alanı." data-ar="مساحة عمل بديهية مصممة للباحثين الجادين مع أدوات تدوين متقدمة، وقدرات بحث قوية، وتحليل مقارن دون انقطاع.">Intuitive workspace designed for serious researchers with advanced annotation tools, powerful search capabilities, and seamless comparative analysis.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="features" style="background: transparent;">
+            <div class="container">
+                <div class="section-header">
+                    <h2 data-en="About the Project" data-tr="Proje Hakkında" data-ar="عن المشروع">About the Project</h2>
+                    <p data-en="'Noor' is more than a software project; it is a heartfelt endeavor born from a passion for sacred knowledge and a belief in the power of technology to deepen our understanding." data-tr="'Noor' sadece bir yazılım projesi değil; kutsal bilgiye olan tutku ve teknolojinin anlayışımızı derinleştirme gücüne olan inançtan doğan içten bir çabadır." data-ar="'نور' ليس مجرد مشروع برمجي؛ إنه مسعى صادق نابع من شغف بالمعرفة المقدسة وإيمان بقوة التكنولوجيا لتعميق فهمنا.">Noor is more than a software project; it is a heartfelt endeavor born from a passion for sacred knowledge and a belief in the power of technology to deepen our understanding.</p>
+                </div>
+                <div class="about-content" style="display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; align-items: center; color: var(--text-muted); font-size: 1.1rem; line-height: 1.8;">
+                    <div class="about-logo" style="text-align: center;">
+                        <span class="logo" style="font-size: 8rem; display: block; line-height: 1;">ٱلْعَلَق</span>
+                        <p style="font-size: 1.2rem; margin-top: 1rem; color: var(--text-light); font-weight: 600;" data-en="Noor Project" data-tr="Noor Projesi" data-ar="مشروع نور">Noor Project</p>
+                    </div>
+                    <div class="about-text">
+                        <p style="margin-bottom: 1.5rem;" data-en="This journey began with my simple question: 'How can we leverage modern technology to not just read, but truly *interact* with the Qur'an?' As the initial developer, I envisioned a tool that would feel less like a static book and more like a dynamic, personal research assistant—a companion for scholars, students, and anyone on a path to deeper knowledge." data-tr="Bu yolculuk, basit bir soruyla başladı: 'Modern teknolojiyi sadece okumak için değil, Kur'an ile gerçekten *etkileşim kurmak* için nasıl kullanabiliriz?' İlk geliştirici olarak, statik bir kitaptan ziyade dinamik, kişisel bir araştırma asistanı gibi hissettiren bir araç hayal ettim; alimler, öğrenciler ve daha derin bilgiye giden yolda olan herkes için bir yol arkadaşı." data-ar="بدأت هذه الرحلة بسؤال بسيط: 'كيف يمكننا الاستفادة من التكنولوجيا الحديثة ليس فقط لقراءة القرآن، بل للتفاعل معه حقًا؟' كمطور أولي، تخيلت أداة تشعر وكأنها أقل من كتاب ثابت وأكثر كمساعد بحثي ديناميكي وشخصي—رفيق للعلماء والطلاب وكل من هو في طريقه إلى معرفة أعمق.">This journey began with my simple question: "How can we leverage modern technology to not just read, but truly *interact* with the Qur'an?" As the initial developer, I envisioned a tool that would feel less like a static book and more like a dynamic, personal research assistant—a companion for scholars, students, and anyone on a path to deeper knowledge.</p>
+                        <p style="margin-bottom: 1.5rem;" data-en="Built on a foundation of C++ and the Qt framework, Noor is engineered for performance, reliability, and complete offline access. I chose to make it open-source (LGPLv3) with the sincere hope that this project will grow beyond a single person's effort. My vision is for a community to form around it, where developers, researchers, and designers from around the world can join in, contributing their skills to create something truly transformative." data-tr="C++ ve Qt çerçevesi temelinde inşa edilen Noor, performans, güvenilirlik ve tam çevrimdışı erişim için tasarlandı. Bu projeyi açık kaynak (LGPLv3) yapmayı seçtim, çünkü bu projenin tek bir kişinin çabasının ötesine büyüyeceğine dair samimi bir umudum var. Vizyonum, dünya çapında geliştiriciler, araştırmacılar ve tasarımcıların bir araya gelerek becerilerini katkıda bulunarak gerçekten dönüştürücü bir şey yaratacağı bir topluluk oluşturmak." data-ar="تم بناء نور على أساس C++ وإطار Qt، وهو مصمم للأداء والموثوقية والوصول الكامل دون اتصال. اخترت جعله مفتوح المصدر (LGPLv3) على أمل صادق أن ينمو هذا المشروع ليتجاوز جهد شخص واحد. رؤيتي هي تشكيل مجتمع حوله، حيث يمكن للمطورين والباحثين والمصممين من جميع أنحاء العالم الانضمام، وتقديم مهاراتهم لخلق شيء تحويلي حقًا.">Built on a foundation of C++ and the Qt framework, Noor is engineered for performance, reliability, and complete offline access. I chose to make it open-source (LGPLv3) with the sincere hope that this project will grow beyond a single person's effort. My vision is for a community to form around it, where developers, researchers, and designers from around the world can join in, contributing their skills to create something truly transformative.</p>
+                        <p data-en="This is an invitation to be part of that future. Whether you contribute code, suggest a feature, or simply use the tool in your studies, you are helping to bring this vision to life and transforming it from 'my project' into 'our project'." data-tr="Bu, o geleceğin bir parçası olma davetidir. İster kod katkısı yapın, ister bir özellik önerin, ister sadece çalışmalarınızda aracı kullanın, bu vizyonu hayata geçirmeye ve 'benim projem'den 'bizim projemiz'e dönüştürmeye yardımcı oluyorsunuz." data-ar="هذه دعوة لتكون جزءًا من هذا المستقبل. سواء ساهمت بالكود، أو اقترحت ميزة، أو استخدمت الأداة في دراساتك، فأنت تساعد في تحقيق هذه الرؤية وتحويلها من 'مشروعي' إلى 'مشروعنا'.">This is an invitation to be part of that future. Whether you contribute code, suggest a feature, or simply use the tool in your studies, you are helping to bring this vision to life and transforming it from "my project" into "our project".</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cta-section" class="cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <h2 data-en="Join the Journey" data-tr="Yolculuğa Katıl" data-ar="انضم إلى الرحلة">Join the Journey</h2>
+                    <p data-en="Noor is more than just software—it's an invitation to explore sacred knowledge in ways never before possible. Help us build the future of textual research." data-tr="Noor sadece bir yazılım değil; kutsal bilgiyi daha önce mümkün olmayan yollarla keşfetmeye bir davettir. Metin araştırmalarının geleceğini inşa etmemize yardım edin." data-ar="نور ليس مجرد برنامج—إنه دعوة لاستكشاف المعرفة المقدسة بطرق لم تكن ممكنة من قبل. ساعدنا في بناء مستقبل البحث النصي.">Noor is more than just software—it's an invitation to explore sacred knowledge in ways never before possible. Help us build the future of textual research.</p>
+                    <div class="cta-buttons">
+                    </div>
+                    <div class="newsletter-form">
+                        <h3 data-en="Stay Updated with Noor" data-tr="Noor ile Güncel Kalın" data-ar="ابقَ على اطلاع مع نور">Stay Updated with Noor</h3>
+                        <form
+                            action="https://buttondown.com/api/emails/embed-subscribe/al-alaq"
+                            method="post"
+                            target="popupwindow"
+                            onsubmit="window.open('https://buttondown.com/al-alaq', 'popupwindow')"
+                            class="embeddable-buttondown-form"
+                        >
+                            <label for="bd-email" data-en="Enter your email" data-tr="E-postanızı girin" data-ar="أدخل بريدك الإلكتروني">Enter your email</label>
+                            <input
+                                type="email"
+                                name="email"
+                                id="bd-email"
+                                placeholder="you@example.com"
+                                required
+                            />
+                            <input
+                                type="submit"
+                                value="Subscribe"
+                                data-en="Subscribe" 
+                                data-tr="Abone Ol" 
+                                data-ar="اشترك"
+                            />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 data-en="Project" data-tr="Proje" data-ar="المشروع">Project</h3>
+                    <a href="https://github.com/cannoor/noor" data-en="GitHub" data-tr="GitHub" data-ar="GitHub">GitHub</a>
+                    <a href="https://github.com/cannurdaskiran/noor/wiki" data-en="Documentation" data-tr="Dokümantasyon" data-ar="الوثائق">Documentation</a>
+                    <a href="https://github.com/cannurdaskiran/noor/releases" data-en="Releases" data-tr="Sürümler" data-ar="الإصدارات">Releases</a>
+                </div>
+                <div class="footer-section">
+                    <h3 data-en="Community" data-tr="Topluluk" data-ar="المجتمع">Community</h3>
+                    <a href="https://github.com/cannurdaskiran/noor/graphs/contributors" data-en="Contributors" data-tr="Katkıda Bulunanlar" data-ar="المساهمون">Contributors</a>
+                    <a href="https://github.com/cannurdaskiran/noor/discussions/" data-en="Discussions" data-tr="Tartışmalar" data-ar="المناقشات">Discussions</a>
+                    <a href="https://github.com/cannurdaskiran/noor/issues" data-en="Issues" data-tr="Sorunlar" data-ar="المشكلات">Issues</a>
+                </div>
+                <div class="footer-section">
+                    <h3 data-en="Technology" data-tr="Teknoloji" data-ar="التكنولوجيا">Technology</h3>
+                    <a href="https://www.qt.io/" target="_blank" data-en="Built with Qt Framework" data-tr="Qt Çerçevesi ile İnşa Edildi" data-ar="مبني باستخدام إطار Qt">Built with Qt Framework</a>
+                    <a href="https://www.kernel.org/" target="_blank" data-en="Linux Support" data-tr="Linux Desteği" data-ar="دعم لينكس">Linux Support</a>
+                    <a href="https://cmake.org/" target="_blank" data-en="Modern C++ Development" data-tr="Modern C++ Geliştirme" data-ar="تطوير C++ الحديث">Modern C++ Development</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-en="&copy; 2025 Noor Project. Open source software released under LGPLv3 License." data-tr="&copy; 2025 Noor Projesi. Açık kaynak yazılım LGPLv3 Lisansı altında yayınlandı." data-ar="&copy; 2025 مشروع نور. برمجيات مفتوحة المصدر صدرت بموجب <رخصة LGPLv3.">&copy; 2025 Noor Project. Open source software released under <strong><a href="https://www.gnu.org/licenses/lgpl-3.0.html" target="_blank">LGPLv3 License</a></strong>.</p>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;" data-en="Built with ❤️ using Qt Framework & Linux 🐧 • Cross-platform desktop application for Windows, macOS & Linux" data-tr="Qt Çerçevesi ve Linux 🐧 kullanılarak ❤️ ile inşa edildi • Windows, macOS ve Linux için çapraz platform masaüstü uygulaması" data-ar="تم بناؤه بـ ❤️ باستخدام إطار Qt ولينكس 🐧 • تطبيق سطح مكتب عبر المنصات لـ Windows و macOS و Linux">Built with ❤️ using Qt Framework & Linux 🐧 • Cross-platform desktop application for Windows, macOS & Linux</p>
+                <br /><br /><strong><a href="https://www.gnu.org/licenses/lgpl-3.0.html" target="_blank">For more information about <strong>LGPLv3 License</strong></a></strong>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animated particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(10, 27, 15, 0.95)';
+            } else {
+                header.style.background = 'rgba(10, 27, 15, 0.9)';
+            }
+        });
+
+        // Language toggle
+        let currentLang = 'en';
+
+        function switchLanguage(lang) {
+            currentLang = lang;
+            document.getElementById('enBtn').classList.toggle('active', lang === 'en');
+            document.getElementById('trBtn').classList.toggle('active', lang === 'tr');
+            document.getElementById('arBtn').classList.toggle('active', lang === 'ar');
+
+            // Toggle RTL for Arabic
+            document.body.classList.toggle('rtl', lang === 'ar');
+
+            // Update title
+            const titleElement = document.querySelector('title');
+            titleElement.textContent = titleElement.getAttribute(`data-${lang}`);
+
+            // Update all translatable elements
+            document.querySelectorAll('[data-en]').forEach(element => {
+                const text = element.getAttribute(`data-${lang}`);
+                if (text) {
+                    element.textContent = text;
+                }
+            });
+
+            // Update form submit button value
+            const submitButton = document.querySelector('.newsletter-form input[type="submit"]');
+            submitButton.value = submitButton.getAttribute(`data-${lang}`);
+        }
+
+        // Initialize particles
+        createParticles();
+
+        // Add intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe feature cards and pillars
+        document.querySelectorAll('.feature-card, .pillar').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
